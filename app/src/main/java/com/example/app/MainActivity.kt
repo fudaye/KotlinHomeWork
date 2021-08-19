@@ -9,21 +9,18 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app.entity.User
 import com.example.app.widget.CodeView
+import com.example.core.BaseApplication
 import com.example.core.utils.CacheUtils
 import com.example.core.utils.Utils
 import com.example.lesson.LessonActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    companion object {
-        val TAG = "ZFY"
-    }
-
     private val usernameKey = "username"
     private val passwordKey = "password"
-    lateinit var et_username: EditText
-    lateinit var et_password: EditText
-    lateinit var et_code: EditText
+    private lateinit var et_username: EditText
+    private lateinit var et_password: EditText
+    private lateinit var et_code: EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,19 +37,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val imgCode = findViewById<CodeView>(R.id.code_view)
         loginBtn.setOnClickListener(this)
         imgCode.setOnClickListener(this)
-
     }
 
     override fun onClick(v: View) {
         if (v is CodeView) {
             v.updateCode()
         } else if (v is Button) {
-            val s = login()
-            Log.d("zfy", "s = $s")
+            login()
         }
     }
 
-    private fun login(): String {
+    private fun login() {
         val username = et_username.text.toString()
         val password = et_password.text.toString()
         val code = et_code.text.toString()
@@ -62,9 +57,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             CacheUtils.save(passwordKey, password)
             startActivity(Intent(this, LessonActivity::class.java))
         }
-
-        return "我要登录楼"
-
     }
 
 

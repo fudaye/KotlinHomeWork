@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.core.BaseViewHolder
 import com.example.lesson.entity.Lesson
 
-class LessonAdapter :RecyclerView.Adapter<LessonAdapter.LessonViewHolder>(){
+class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
 
     var list = listOf<Lesson>()
 
-    fun updateAndNotify(list: List<Lesson>){
+    fun updateAndNotify(list: List<Lesson>) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -30,25 +30,20 @@ class LessonAdapter :RecyclerView.Adapter<LessonAdapter.LessonViewHolder>(){
 
     class LessonViewHolder internal constructor(itemView: View) : BaseViewHolder(itemView) {
 
-        companion object{
+        companion object {
             fun onCreate(parent: ViewGroup): LessonViewHolder {
                 return LessonViewHolder(LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_lesson, parent, false))
             }
         }
 
-        fun onBind(lesson: Lesson) {
-            var data = lesson.date
-            if (data == null) {
-                data = "日期待定"
-            }
-            setText(R.id.tv_date, data)
+        internal fun onBind(lesson: Lesson) {
+            setText(R.id.tv_date, lesson.date ?: "日期待定")
             //let 判断这个值是否为null 如果不为null的时候才执行代码块里面的代码
             lesson.content?.let { setText(R.id.tv_content, it) }
-            val state = lesson.state
-            if (state != null) {
-                state.stateName()?.let { setText(R.id.tv_state, it) }
-                val colorRes: Int = when (state) {
+            lesson.state?.let {
+                it.stateName()?.let { s-> setText(R.id.tv_state, s) }
+                val colorRes: Int = when (it) {
                     Lesson.State.PLAYBACK -> R.color.playback
                     Lesson.State.LIVE -> R.color.live
                     Lesson.State.WAIT -> R.color.wait

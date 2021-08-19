@@ -9,10 +9,9 @@ object HttpClient : OkHttpClient() {
 
     private val gson = Gson();
 
-    fun <T> convert(string: String? ,type: Type) : T{
-        return gson.fromJson(string,type)
+    fun <T> convert(string: String?, type: Type): T {
+        return gson.fromJson(string, type)
     }
-
 
 
     fun <T> get(path: String, type: Type, entityCallback: EntityCallback<T>) {
@@ -25,8 +24,8 @@ object HttpClient : OkHttpClient() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                when(response.code()){
-                    in 200..299 -> entityCallback.onSuccess(convert(response.body()!!.string(),type))
+                when (response.code()) {
+                    in 200..299 -> entityCallback.onSuccess(convert(response.body()!!.string(), type))
                     in 400..499 -> entityCallback.onFailure("客户端错误")
                     in 500..599 -> entityCallback.onFailure("服务器错误")
                     else -> entityCallback.onFailure("位置错误")

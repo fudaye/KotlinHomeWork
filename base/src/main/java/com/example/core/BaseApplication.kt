@@ -5,11 +5,9 @@ import android.content.Context
 
 class BaseApplication : Application() {
     companion object {
-        lateinit var currentApplication: Context
+        lateinit var currentApplication: Context//自动生成setter and  getter
+            private set//不能被修改
 
-        fun currentApplication(): Context {
-            return currentApplication
-        }
     }
 
     override fun attachBaseContext(base: Context?) {
