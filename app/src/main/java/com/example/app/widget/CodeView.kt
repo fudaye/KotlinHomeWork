@@ -10,12 +10,19 @@ import android.view.Gravity
 import androidx.appcompat.widget.AppCompatTextView
 import com.example.app.R
 import com.example.core.utils.Utils
+import com.example.core.utils.Utils.dp2px
 import kotlin.random.Random
 
-class CodeView @JvmOverloads constructor(context: Context?, attributeSet: AttributeSet? = null)
+class CodeView @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null)
     : AppCompatTextView(context, attributeSet) {
 
-    private var paint: Paint = Paint()
+    private var paint: Paint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.STROKE
+        color = getContext().getColor(R.color.colorAccent)
+        strokeWidth = 6f.dp2px()
+
+    }
 
     private val codeList = arrayOf(
             "kotlin",
@@ -33,30 +40,8 @@ class CodeView @JvmOverloads constructor(context: Context?, attributeSet: Attrib
         gravity = Gravity.CENTER
         setBackgroundColor(getContext().getColor(R.color.colorPrimary))
         setTextColor(Color.WHITE)
-
-        paint.isAntiAlias = true
-        paint.style = Paint.Style.STROKE
-        paint.color = getContext().getColor(R.color.colorAccent)
-        paint.strokeWidth = Utils.dp2px(6f)
-
         updateCode()
     }
-
-//    constructor(context: Context) : this(context, null)
-//    constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet) {
-//        setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
-//        gravity = Gravity.CENTER
-//        setBackgroundColor(getContext().getColor(R.color.colorPrimary))
-//        setTextColor(Color.WHITE)
-//
-//        paint.isAntiAlias = true
-//        paint.style = Paint.Style.STROKE
-//        paint.color = getContext().getColor(R.color.colorAccent)
-//        paint.strokeWidth = Utils.dp2px(6f)
-//
-//        updateCode()
-//
-//    }
 
     fun updateCode() {
         val random = Random.nextInt(codeList.size)

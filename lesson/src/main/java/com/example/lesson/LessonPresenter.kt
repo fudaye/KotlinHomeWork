@@ -13,32 +13,27 @@ class LessonPresenter(private var activity: LessonActivity) {
     companion object {
         const val LESSON_PATH = "lessons"
     }
+
     private var lessons = arrayListOf<Lesson>()
 
-    val type: Type = object : TypeToken<List<Lesson>>() {}.type
+    private val type: Type = object : TypeToken<List<Lesson>>() {}.type
 
-    fun fetchData (){
-        HttpClient.get(LESSON_PATH,type,object : EntityCallback<List<Lesson>> {
+    fun fetchData() {
+        HttpClient.get(LESSON_PATH, type, object : EntityCallback<List<Lesson>> {
             override fun onSuccess(entity: List<Lesson>) {
                 lessons = entity as ArrayList<Lesson>
                 activity.runOnUiThread { activity.showResult(lessons) }
             }
 
             override fun onFailure(message: String) {
-                activity.runOnUiThread{Utils.toast(message)}
+                activity.runOnUiThread { Utils.toast(message) }
             }
 
         })
     }
 
-    fun showPlayback (){
-        val playbackLessons = arrayListOf<Lesson>()
-        for (lesson:Lesson in lessons){
-            if (lesson.state == Lesson.State.PLAYBACK){
-                playbackLessons.add(lesson)
-            }
-        }
-        activity.showResult(playbackLessons)
+    fun showPlayback() {
+        activity.showResult(lessons.filter { lesson -> lesson.state == Lesson.State.PLAYBACK })
     }
 
 }
